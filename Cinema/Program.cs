@@ -3,14 +3,15 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+var connectionString = builder.Configuration.GetConnectionString("default"); var serverVersion = ServerVersion.AutoDetect(connectionString);
+builder.Services.AddDbContext<AppDbContext>(dbContextOptions => dbContextOptions.UseMySql(connectionString, serverVersion).LogTo(Console.WriteLine, LogLevel.Information).EnableSensitiveDataLogging().EnableDetailedErrors());
+
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
-
-var connectionString = builder.Configuration.GetConnectionString("default"); var serverVersion = ServerVersion.AutoDetect(connectionString); 
-builder.Services.AddDbContext<AppDbContext>(dbContextOptions => dbContextOptions.UseMySql(connectionString, serverVersion).LogTo(Console.WriteLine, LogLevel.Information).EnableSensitiveDataLogging().EnableDetailedErrors());
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
