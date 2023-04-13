@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cinema.DataAccess.Repository.IRepository
+namespace Cinema.DataAccess.Repository
 {
-    internal interface IUnitOfWork
+    public class BigliettoRepository
     {
-
-        void Save();
     }
 }

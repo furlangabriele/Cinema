@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Cinema.DataAccess.Repository.IRepository
 {
-    public interface ISpettacolo : IRepository<Spettacolo>
+    public interface ISpettacoloRepository : IRepository<Spettacolo>
     {
         void Update(Spettacolo spettacolo);
     }

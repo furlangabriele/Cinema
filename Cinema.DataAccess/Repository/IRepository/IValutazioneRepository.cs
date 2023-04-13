@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Cinema.DataAccess.Repository.IRepository
 {
-    public interface ISala : IRepository<Sala>
+    public interface IValutazioneRepository : IRepository<Valutazione>
     {
-        void Update(Sala sala);
+        void Update(Valutazione valutazione);
     }
 }
