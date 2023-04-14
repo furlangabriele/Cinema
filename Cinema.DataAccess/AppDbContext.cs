@@ -7,13 +7,12 @@ using Cinema.Models;
 
 namespace Cinema.DataAccess;
 
-public partial class AppDbContext : IdentityDbContext<IdentityUser>
+public partial class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
     }
-
     public virtual DbSet<Biglietto> Bigliettos { get; set; }
 
     public virtual DbSet<Film> Films { get; set; }

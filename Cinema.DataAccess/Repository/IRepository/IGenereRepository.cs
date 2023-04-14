@@ -9,6 +9,6 @@ namespace Cinema.DataAccess.Repository.IRepository
 {
     public interface IGenereRepository : IRepository<Genere>
     {
-        void Update(Genere genere);
+        void Update(Genere old, Genere genere);
     }
 }

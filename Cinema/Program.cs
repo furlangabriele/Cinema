@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Cinema.DataAccess.Repository;
 using Cinema.DataAccess.Repository.IRepository;
+using BulkyBook.DataAccess.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,13 +13,8 @@ builder.Services.AddControllersWithViews();
 var connectionString = builder.Configuration.GetConnectionString("default");
 var serverVersion = ServerVersion.AutoDetect(connectionString);
 builder.Services.AddDbContext<AppDbContext>(dbContextOptions => dbContextOptions.UseMySql(connectionString, serverVersion).LogTo(Console.WriteLine, LogLevel.Information).EnableSensitiveDataLogging().EnableDetailedErrors());
-//per impostare la verifica dell'account prima di poter effettuare il login
-//occorre inserire come argomento del metodo AddDefaultIdentity l'espressione
-//builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-//UnitOfWork si occupa della gestione di tutti i repository
 
-//serve per gestire i casi in cui l'utente prova ad accedere a funzioni che richiedono autenticazione e/o autorizzazione
-//https://learn.microsoft.com/en-us/answers/questions/963681/asp-net-mvc-how-unauthorize-access-redirect-user-t
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
@@ -46,6 +42,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+
 
 app.UseRequestLocalization("it-IT");
 app.Run();
