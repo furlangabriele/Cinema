@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cinema.DataAccess.Repository.IRepository
 {
-    internal interface IUnitOfWork
+    public interface IUnitOfWork
     {
 
         void Save();

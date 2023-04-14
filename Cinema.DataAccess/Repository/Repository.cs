@@ -17,14 +17,12 @@ namespace Cinema.DataAccess.Repository
         public Repository(AppDbContext db)
         {
             _db = db;
-            //_db.Products.Include(u => u.Category).Include(u=>u.CoverType);
             this.dbSet = _db.Set<T>();
         }
         public void Add(T entity)
         {
             dbSet.Add(entity);
         }
-        //includeProp - "Category,CoverType"
         public IEnumerable<T> GetAll(string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;

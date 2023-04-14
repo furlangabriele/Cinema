@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Cinema.DataAccess.Repository.IRepository
 {
-    public interface IGenere : IRepository<Genere>
+    public interface IGenereRepository : IRepository<Genere>
     {
         void Update(Genere genere);
     }

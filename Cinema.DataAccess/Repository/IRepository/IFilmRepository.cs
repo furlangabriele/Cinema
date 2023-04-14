@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Cinema.DataAccess.Repository.IRepository
 {
-    public interface IFilm : IRepository<Film>
+    public interface IFilmRepository : IRepository<Film>
     {
         void Update(Film film);
     }

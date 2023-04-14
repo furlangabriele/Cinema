@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Cinema.DataAccess.Repository
 {
-    public class BigliettoRepository : Repository<Biglietto>, IBigliettoRepository
+    public class GenereRepository : Repository<Genere>, IGenereRepository
     {
         private AppDbContext _db;
-        public BigliettoRepository(AppDbContext db) : base(db)
+        public GenereRepository(AppDbContext db) : base(db)
         {
             _db = db;
         }
-        public void Update(Biglietto obj)
+        public void Update(Genere obj)
         {
             _db.Update(obj);
         }
