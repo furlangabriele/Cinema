@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class GenereController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

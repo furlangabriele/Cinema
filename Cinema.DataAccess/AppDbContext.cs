@@ -7,7 +7,7 @@ using Cinema.Models;
 
 namespace Cinema.DataAccess;
 
-public partial class AppDbContext : DbContext
+public partial class AppDbContext : IdentityDbContext<IdentityUser>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
