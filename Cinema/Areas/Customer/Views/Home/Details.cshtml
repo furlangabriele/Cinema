@@ -1,0 +1,24 @@
+﻿@model Film
+
+<div class="container">
+    <img src="@Model.UrlImmPub" class="card-img-top rounded" />
+
+    <div class="card-body">
+        <div class="pl-1">
+            <p class="card-title h5 text-primary">@Model.Titolo</p>
+            <p class="card-title text-info">Genere: <b>@Model.Genere</b></p>
+        </div>
+        <div class="pl-1">
+            <p>Descrizione: <b>@Model.Descrizione</b></p>
+        </div>
+        <div class="pl-1">
+            <p>Anno di produzione: <b>@Model.AnnoProd</b></p>
+        </div>
+        <div class="pl-1">
+            <p>Durata: <b>@Model.Durata</b></p>
+        </div>
+    </div>
+</div>
+<div>
+    Spettacoli con questo film:
+</div>

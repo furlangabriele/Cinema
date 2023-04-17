@@ -1,0 +1,99 @@
+﻿@model Cinema.Models.ViewModel.FilmVM
+
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+	<input asp-for="Film.UrlImmPub" hidden />
+
+	<div class="row">
+		<div class="col-10">
+			<div class="border p-3 mt-4 row">
+				<div class="col-12 pb-2">
+					<h2 class="text-primary">@(Model.Film.Titolo != null ? "Update" : "Create")  Film</h2>
+					<hr />
+				</div>
+				@*<div asp-validation-summary="All"></div>*@
+				<div class="mb-3">
+					<label asp-for="Film.Titolo"></label>
+					<input asp-for="Film.Titolo" class="form-control" />
+					<span asp-validation-for="Film.Titolo" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="Film.Descrizione"></label>
+					<textarea asp-for="Film.Descrizione" rows="3" class="form-control"></textarea>
+					<span asp-validation-for="Film.Descrizione" class="text-danger"></span>
+				</div>
+				<div class="mb-3 col-6">
+					<label asp-for="Film.Durata"></label>
+					<input asp-for="Film.Durata" class="form-control" />
+					<span asp-validation-for="Film.Durata" class="text-danger"></span>
+				</div>
+				<div class="mb-3 col-6">
+					<label asp-for="Film.AnnoProd"></label>
+					<input asp-for="Film.AnnoProd" class="form-control" />
+					<span asp-validation-for="Film.AnnoProd" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="Film.UrlImmPub"></label>
+					<input type="file" id="uploadBox" name="file" class="form-control" />
+				</div>
+
+				<div class="mb-3 col-6">
+					<label asp-for="Film.Genere"></label>
+					<select asp-for="Film.Genere" asp-items="@Model.GenereList" class="form-select">
+						<option disabled selected>--Scegli il Genere--</option>
+					</select>
+					<span asp-validation-for="Film.Genere" class="text-danger"></span>
+				</div>
+				<div class="col-12">
+					@if (Model.Film.Titolo != null)
+					{
+						<button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+					}
+					else
+					{
+						<button type="submit" onclick="return ValidateInput()" class="btn btn-primary" style="width:150px">Create</button>
+					}
+					<a asp-controller="Film" asp-action="Index" class="btn btn-secondary" style="width:150px">
+						Back to List
+					</a>
+				</div>
+
+			</div>
+		</div>
+		<div class="col-2 pt-4">
+			<img src="@Model.Film.UrlImmPub"
+				 width="100%" style="border-radius:5px; border:1px solid #bbb9b9" />
+		</div>
+	</div>
+
+
+
+
+
+
+
+</form>
+
+@section Scripts{
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+	<script>
+		tinymce.init({
+			selector: 'textarea',
+			plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+			toolbar_mode: 'floating',
+		});
+
+		function ValidateInput() {
+			if (document.getElementById("uploadBox").value == "") {
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: 'Please upload an Image!',
+				});
+				return false;
+			}
+			return true;
+		}
+	</script>
+}

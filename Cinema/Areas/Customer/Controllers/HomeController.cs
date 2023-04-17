@@ -1,4 +1,6 @@
-﻿using Cinema.Models;
+﻿using BulkyBook.DataAccess.Repository;
+using Cinema.DataAccess.Repository.IRepository;
+using Cinema.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -8,18 +10,27 @@ namespace Cinema.Areas.Customer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+		private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(ILogger<HomeController> logger)
+		public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
-        }
+			_unitOfWork = unitOfWork;
+		}
 
         public IActionResult Index()
         {
-            return View();
+			IEnumerable<Film> films = _unitOfWork.Film.GetAll();
+			ViewData["Title"] = "HomePage";
+			return View(films);
         }
-
-        public IActionResult Privacy()
+		public IActionResult Details(string id)
+		{
+            var film = _unitOfWork.Film.GetFirstOrDefault(f => id == f.Titolo);
+            ViewData["Title"] = film.Titolo;
+			return View(film);
+		}
+		public IActionResult Privacy()
         {
             return View();
         }

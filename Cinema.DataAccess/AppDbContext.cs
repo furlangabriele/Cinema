@@ -29,6 +29,8 @@ public partial class AppDbContext : IdentityDbContext<IdentityUser>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder
             .UseCollation("latin1_swedish_ci")
             .HasCharSet("latin1");
