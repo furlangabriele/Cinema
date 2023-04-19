@@ -1,0 +1,57 @@
+﻿@model Cinema.Models.ViewModel.SpettacoloVM
+
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-10">
+            <div class="border p-3 mt-4 row">
+                <div class="col-12 pb-2">
+                    <h2 class="text-primary">@(Model.Spettacolo.FkSala != 0 ? "Update" : "Create")  Sala</h2>
+                    <hr />
+                </div>
+                @*<div asp-validation-summary="All"></div>*@
+                <div class="mb-3 col-6">
+					<label asp-for="Spettacolo.FkSala"></label>
+					<select asp-for="Spettacolo.FkSala" asp-items="@Model.SalaList" class="form-select">
+						<option disabled selected>--Scegli la sala--</option>
+					</select>
+				</div>
+                <div class="mb-3 col-6">
+					<label asp-for="Spettacolo.FkFilm"></label>
+					<select asp-for="Spettacolo.FkFilm" asp-items="@Model.FilmList" class="form-select">
+						<option disabled selected>--Scegli il film--</option>
+					</select>
+				</div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Spettacolo.Data"></label>
+                    <input asp-for="Spettacolo.Data"/>
+                    <span asp-validation-for="Spettacolo.Data" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Spettacolo.Orario"></label>
+                    <input asp-for="Spettacolo.Orario"/>
+                    <span asp-validation-for="Spettacolo.Orario" class="text-danger"></span>
+                </div>
+                <div class="col-12">
+                    @if (Model.Spettacolo.FkSala != 0)
+                    {
+                        <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+                    }
+                    else
+                    {
+                        <button type="submit" onclick="return ValidateInput()" class="btn btn-primary" style="width:150px">Create</button>
+                    }
+                    <a asp-controller="Spettacolo" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                        Back to List
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

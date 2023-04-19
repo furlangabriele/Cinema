@@ -28,6 +28,8 @@ namespace Cinema.Areas.Customer.Controllers
 		{
             var film = _unitOfWork.Film.GetFirstOrDefault(f => id == f.Titolo);
             ViewData["Title"] = film.Titolo;
+            var spettacoloConFilm = _unitOfWork.Spettacolo.GetAll().Where(s => s.FkFilm == id);
+            ViewBag.spettacoli = spettacoloConFilm;
 			return View(film);
 		}
 		public IActionResult Privacy()

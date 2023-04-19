@@ -9,6 +9,6 @@ namespace Cinema.DataAccess.Repository.IRepository
 {
     public interface ISpettacoloRepository : IRepository<Spettacolo>
     {
-        void Update(Spettacolo spettacolo);
+        void Update(Spettacolo spettacolo, Spettacolo old);
     }
 }

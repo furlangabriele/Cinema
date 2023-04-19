@@ -15,9 +15,10 @@ namespace Cinema.DataAccess.Repository
         {
             _db = db;
         }
-        public void Update(Spettacolo obj)
+        public void Update(Spettacolo obj, Spettacolo old)
         {
-            _db.Update(obj);
+            _db.Remove(old);
+            _db.Add(obj);
         }
     }
 }

@@ -1,0 +1,51 @@
+﻿@model Cinema.Models.Sala
+
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-10">
+            <div class="border p-3 mt-4 row">
+                <div class="col-12 pb-2">
+                    <h2 class="text-primary">@(Model.Numero != 0 ? "Update" : "Create")  Sala</h2>
+                    <hr />
+                </div>
+                @*<div asp-validation-summary="All"></div>*@
+                <div class="mb-3">
+                    <label asp-for="Numero"></label>
+                    <input asp-for="Numero" class="form-control" />
+                    <span asp-validation-for="Numero" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PostiDisponibili"></label>
+                    <input asp-for="PostiDisponibili" class="form-control" />
+                    <span asp-validation-for="PostiDisponibili" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Isense"></label><br />
+                    <input type="radio" required asp-for="Isense" value="true" /> Presente<br />
+                    <input type="radio" required asp-for="Isense" value="false" /> Non presente <br />
+                    <span asp-validation-for="Isense" class="text-danger"></span>
+                </div>
+                <div class="col-12">
+                    @if (Model.Numero != 0)
+                    {
+                        <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+                    }
+                    else
+                    {
+                        <button type="submit" onclick="return ValidateInput()" class="btn btn-primary" style="width:150px">Create</button>
+                    }
+                    <a asp-controller="Sala" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                        Back to List
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
