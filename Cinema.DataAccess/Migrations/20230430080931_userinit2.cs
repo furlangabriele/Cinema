@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Cinema.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class identitymigration : Migration
+    public partial class userinit2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,6 +40,16 @@ namespace Cinema.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false, collation: "latin1_swedish_ci")
+                        .Annotation("MySql:CharSet", "latin1"),
+                    Discriminator = table.Column<string>(type: "longtext", nullable: false, collation: "latin1_swedish_ci")
+                        .Annotation("MySql:CharSet", "latin1"),
+                    Cognome = table.Column<string>(type: "longtext", nullable: true, collation: "latin1_swedish_ci")
+                        .Annotation("MySql:CharSet", "latin1"),
+                    Nome = table.Column<string>(type: "longtext", nullable: true, collation: "latin1_swedish_ci")
+                        .Annotation("MySql:CharSet", "latin1"),
+                    Sesso = table.Column<string>(type: "longtext", nullable: true, collation: "latin1_swedish_ci")
+                        .Annotation("MySql:CharSet", "latin1"),
+                    ComuneRes = table.Column<string>(type: "longtext", nullable: true, collation: "latin1_swedish_ci")
                         .Annotation("MySql:CharSet", "latin1"),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true, collation: "latin1_swedish_ci")
                         .Annotation("MySql:CharSet", "latin1"),
@@ -96,33 +106,6 @@ namespace Cinema.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PRIMARY", x => x.numero);
-                })
-                .Annotation("MySql:CharSet", "latin1")
-                .Annotation("Relational:Collation", "latin1_swedish_ci");
-
-            migrationBuilder.CreateTable(
-                name: "utente",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int(11)", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    cognome = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true, collation: "latin1_swedish_ci")
-                        .Annotation("MySql:CharSet", "latin1"),
-                    nome = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true, collation: "latin1_swedish_ci")
-                        .Annotation("MySql:CharSet", "latin1"),
-                    email = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false, collation: "latin1_swedish_ci")
-                        .Annotation("MySql:CharSet", "latin1"),
-                    password = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false, collation: "latin1_swedish_ci")
-                        .Annotation("MySql:CharSet", "latin1"),
-                    sesso = table.Column<string>(type: "char(1)", fixedLength: true, maxLength: 1, nullable: false, collation: "latin1_swedish_ci")
-                        .Annotation("MySql:CharSet", "latin1"),
-                    dataNascita = table.Column<DateOnly>(type: "date", nullable: false),
-                    comuneRes = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false, collation: "latin1_swedish_ci")
-                        .Annotation("MySql:CharSet", "latin1")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PRIMARY", x => x.id);
                 })
                 .Annotation("MySql:CharSet", "latin1")
                 .Annotation("Relational:Collation", "latin1_swedish_ci");
@@ -321,16 +304,17 @@ namespace Cinema.DataAccess.Migrations
                 name: "valutazione",
                 columns: table => new
                 {
+                    ApplicationUserId = table.Column<string>(type: "varchar(255)", nullable: false, collation: "latin1_swedish_ci")
+                        .Annotation("MySql:CharSet", "latin1"),
                     fk_Film = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false, collation: "latin1_swedish_ci")
                         .Annotation("MySql:CharSet", "latin1"),
-                    fk_utente = table.Column<int>(type: "int(11)", nullable: false),
                     valutazione = table.Column<int>(type: "int(11)", nullable: false),
                     commento = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true, collation: "latin1_swedish_ci")
                         .Annotation("MySql:CharSet", "latin1")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PRIMARY", x => new { x.fk_Film, x.fk_utente })
+                    table.PrimaryKey("PRIMARY", x => new { x.fk_Film, x.ApplicationUserId })
                         .Annotation("MySql:IndexPrefixLength", new[] { 0, 0 });
                     table.ForeignKey(
                         name: "valutazione_ibfk_1",
@@ -340,9 +324,9 @@ namespace Cinema.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "valutazione_ibfk_2",
-                        column: x => x.fk_utente,
-                        principalTable: "utente",
-                        principalColumn: "id",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "latin1")
@@ -352,7 +336,8 @@ namespace Cinema.DataAccess.Migrations
                 name: "biglietto",
                 columns: table => new
                 {
-                    fk_utente = table.Column<int>(type: "int(11)", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "varchar(255)", nullable: false, collation: "latin1_swedish_ci")
+                        .Annotation("MySql:CharSet", "latin1"),
                     fk_Sala = table.Column<int>(type: "int(11)", nullable: false),
                     fk_Film = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false, collation: "latin1_swedish_ci")
                         .Annotation("MySql:CharSet", "latin1"),
@@ -363,19 +348,19 @@ namespace Cinema.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PRIMARY", x => new { x.fk_utente, x.fk_Sala, x.fk_Film, x.data, x.orario, x.fila, x.posto })
+                    table.PrimaryKey("PRIMARY", x => new { x.ApplicationUserId, x.fk_Sala, x.fk_Film, x.data, x.orario, x.fila, x.posto })
                         .Annotation("MySql:IndexPrefixLength", new[] { 0, 0, 0, 0, 0, 0, 0 });
+                    table.ForeignKey(
+                        name: "FK_biglietto_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "biglietto_ibfk_1",
                         columns: x => new { x.fk_Sala, x.fk_Film, x.data, x.orario },
                         principalTable: "spettacolo",
                         principalColumns: new[] { "fk_Sala", "fk_Film", "data", "orario" },
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "biglietto_ibfk_2",
-                        column: x => x.fk_utente,
-                        principalTable: "utente",
-                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "latin1")
@@ -434,15 +419,9 @@ namespace Cinema.DataAccess.Migrations
                 column: "fk_Film");
 
             migrationBuilder.CreateIndex(
-                name: "email",
-                table: "utente",
-                column: "email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "fk_utente",
+                name: "IX_valutazione_ApplicationUserId",
                 table: "valutazione",
-                column: "fk_utente");
+                column: "ApplicationUserId");
         }
 
         /// <inheritdoc />
@@ -473,13 +452,10 @@ namespace Cinema.DataAccess.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "spettacolo");
 
             migrationBuilder.DropTable(
-                name: "utente");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "sala");

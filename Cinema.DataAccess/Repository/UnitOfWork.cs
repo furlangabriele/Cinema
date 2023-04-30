@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulkyBook.DataAccess.Repository
+namespace Cinema.DataAccess.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {

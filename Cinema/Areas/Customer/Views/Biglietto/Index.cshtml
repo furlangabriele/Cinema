@@ -1,0 +1,191 @@
+﻿@model IEnumerable<SelectListItem>
+
+<link rel="stylesheet" href="~/css/tickets5.css" />
+
+<div class="movie-container">
+    <h2>Scegli i tuoi posti</h2>
+    <select asp-items="Model" class="btn"></select>
+    <button class="btn btn-danger">Aggiungi al tuo ordine</button>
+</div>
+
+<div class="container">
+
+    <div class="theatre">
+
+        <div class="cinema-seats left">
+            <div class="cinema-row row-1">
+                @for(int i = 1; i < 8; i++)
+                {
+                    if(Model.Where(p => p.Value == $"{i}-1").Count() == 0)
+                    {
+                        <div class="seat active" id="@i-1"></div>
+                        continue;
+                    }
+                    <div class="seat" id="@i-1"></div>
+                }
+            </div>
+
+            <div class="cinema-row row-2">
+                @for (int i = 1; i < 8; i++)
+                {
+                    if(Model.Where(p => p.Value == $"{i}-2").Count() == 0)
+                    {
+                        <div class="seat active" id="@i-2"></div>
+                        continue;
+                    }
+                    <div class="seat" id="@i-2"></div>
+                }
+            </div>
+
+            <div class="cinema-row row-3">
+                @for (int i = 1; i < 8; i++)
+                {
+                    if(Model.Where(p => p.Value == $"{i}-3").Count() == 0)
+                    {
+                        <div class="seat active" id="@i-3"></div>
+                        continue;
+                    }
+                    <div class="seat" id="@i-3"></div>
+                }
+            </div>
+
+            <div class="cinema-row row-4">
+                @for (int i = 1; i < 8; i++)
+                {
+                    if(Model.Where(p => p.Value == $"{i}-4").Count() == 0)
+                    {
+                        <div class="seat active" id="@i-4"></div>
+                        continue;
+                    }
+                    <div class="seat" id="@i-4"></div>
+                }
+            </div>
+
+            <div class="cinema-row row-5">
+                @for (int i = 1; i < 8; i++)
+                {
+                    if(Model.Where(p => p.Value == $"{i}-5").Count() == 0)
+                    {
+                        <div class="seat active" id="@i-5"></div>
+                        continue;
+                    }
+                    <div class="seat" id="@i-5"></div>
+                }
+            </div>
+
+            <div class="cinema-row row-6">
+                 @for (int i = 1; i < 8; i++)
+                {
+                    if (Model.Where(p => p.Value == $"{i}-6").Count() == 0)
+                    {
+                        <div class="seat active" id="@i-6"></div>
+                        continue;
+                    }
+                    <div class="seat" id="@i-6"></div>
+                }
+            </div>
+
+            <div class="cinema-row row-7">
+                @for (int i = 1; i < 8; i++)
+                {
+                    if (Model.Where(p => p.Value == $"{i}-7").Count() == 0)
+                    {
+                        <div class="seat active" id="@i-7"></div>
+                        continue;
+                    }
+                    <div class="seat" id="@i-7"></div>
+                }
+            </div>
+        </div>
+
+
+        <div class="cinema-seats right">
+            <div class="cinema-row row-1">
+                @for (int i = 8; i < 15; i++)
+                {
+                    if (Model.Where(p => p.Value == $"{i}-1").Count() == 0)
+                    {
+                        <div class="seat active" id="@i-1"></div>
+                        continue;
+                    }
+                    <div class="seat" id="@i-1"></div>
+                }
+            </div>
+
+            <div class="cinema-row row-2">
+                @for (int i = 8; i < 15; i++)
+                {
+                    if (Model.Where(p => p.Value == $"{i}-2").Count() == 0)
+                    {
+                        <div class="seat active" id="@i-2"></div>
+                        continue;
+                    }
+                    <div class="seat" id="@i-2"></div>
+                }
+            </div>
+
+            <div class="cinema-row row-3">
+                @for (int i = 8; i < 15; i++)
+                {
+                    if (Model.Where(p => p.Value == $"{i}-3").Count() == 0)
+                    {
+                        <div class="seat active" id="@i-3"></div>
+                        continue;
+                    }
+                    <div class="seat" id="@i-3"></div>
+                }
+            </div>
+
+            <div class="cinema-row row-4">
+                @for (int i = 8; i < 15; i++)
+                {
+                    if (Model.Where(p => p.Value == $"{i}-4").Count() == 0)
+                    {
+                        <div class="seat active" id="@i-4"></div>
+                        continue;
+                    }
+                    <div class="seat" id="@i-4"></div>
+                }
+            </div>
+
+            <div class="cinema-row row-5">
+                @for (int i = 8; i < 15; i++)
+                {
+                    if (Model.Where(p => p.Value == $"{i}-5").Count() == 0)
+                    {
+                        <div class="seat active" id="@i-5"></div>
+                        continue;
+                    }
+                    <div class="seat" id="@i-5"></div>
+                }
+            </div>
+
+            <div class="cinema-row row-6">
+                @for (int i = 8; i < 15; i++)
+                {
+                    if (Model.Where(p => p.Value == $"{i}-6").Count() == 0)
+                    {
+                        <div class="seat active" id="@i-6"></div>
+                        continue;
+                    }
+                    <div class="seat" id="@i-6"></div>
+                }
+            </div>
+
+            <div class="cinema-row row-7">
+                @for (int i = 8; i < 15; i++)
+                {
+                    if (Model.Where(p => p.Value == $"{i}-7").Count() == 0)
+                    {
+                        <div class="seat active" id="@i-7"></div>
+                        continue;
+                    }
+                    <div class="seat" id="@i-7"></div>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="~/js/tickets4.js"></script>

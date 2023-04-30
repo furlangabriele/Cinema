@@ -1,27 +1,26 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Cinema.Models;
 
-public partial class Utente
+public partial class ApplicationUser : IdentityUser
 {
-    public int Id { get; set; }
-
+    [Required]
     public string? Cognome { get; set; }
-
+    [Required]
     public string? Nome { get; set; }
-
-    public string Email { get; set; } = null!;
-
-    public string Password { get; set; } = null!;
-
+    [Required]
     public string Sesso { get; set; } = null!;
-
+    [NotMapped]
     public DateOnly DataNascita { get; set; }
-
+    [Required]
     public string ComuneRes { get; set; } = null!;
-
+    [ValidateNever]
     public virtual ICollection<Biglietto> Bigliettos { get; } = new List<Biglietto>();
-
+    [ValidateNever]
     public virtual ICollection<Valutazione> Valutaziones { get; } = new List<Valutazione>();
 }

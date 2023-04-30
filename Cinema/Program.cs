@@ -2,7 +2,7 @@ using Cinema.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Cinema.DataAccess.Repository.IRepository;
-using BulkyBook.DataAccess.Repository;
+using Cinema.DataAccess.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 

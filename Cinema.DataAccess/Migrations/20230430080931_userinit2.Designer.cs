@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinema.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230414175839_identitymigration1")]
-    partial class identitymigration1
+    [Migration("20230430080931_userinit2")]
+    partial class userinit2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,9 +27,8 @@ namespace Cinema.DataAccess.Migrations
 
             modelBuilder.Entity("Cinema.Models.Biglietto", b =>
                 {
-                    b.Property<int>("FkUtente")
-                        .HasColumnType("int(11)")
-                        .HasColumnName("fk_utente");
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("FkSala")
                         .HasColumnType("int(11)")
@@ -56,7 +55,7 @@ namespace Cinema.DataAccess.Migrations
                         .HasColumnType("int(11)")
                         .HasColumnName("posto");
 
-                    b.HasKey("FkUtente", "FkSala", "FkFilm", "Data", "Orario", "Fila", "Posto")
+                    b.HasKey("ApplicationUserId", "FkSala", "FkFilm", "Data", "Orario", "Fila", "Posto")
                         .HasName("PRIMARY")
                         .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0, 0, 0, 0, 0, 0 });
 
@@ -166,61 +165,6 @@ namespace Cinema.DataAccess.Migrations
                     b.ToTable("spettacolo", (string)null);
                 });
 
-            modelBuilder.Entity("Cinema.Models.Utente", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int(11)")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Cognome")
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("cognome");
-
-                    b.Property<string>("ComuneRes")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("comuneRes");
-
-                    b.Property<DateOnly>("DataNascita")
-                        .HasColumnType("date")
-                        .HasColumnName("dataNascita");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar(30)")
-                        .HasColumnName("email");
-
-                    b.Property<string>("Nome")
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("nome");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("password");
-
-                    b.Property<string>("Sesso")
-                        .IsRequired()
-                        .HasMaxLength(1)
-                        .HasColumnType("char(1)")
-                        .HasColumnName("sesso")
-                        .IsFixedLength();
-
-                    b.HasKey("Id")
-                        .HasName("PRIMARY");
-
-                    b.HasIndex(new[] { "Email" }, "email")
-                        .IsUnique();
-
-                    b.ToTable("utente", (string)null);
-                });
-
             modelBuilder.Entity("Cinema.Models.Valutazione", b =>
                 {
                     b.Property<string>("FkFilm")
@@ -228,9 +172,8 @@ namespace Cinema.DataAccess.Migrations
                         .HasColumnType("varchar(20)")
                         .HasColumnName("fk_Film");
 
-                    b.Property<int>("FkUtente")
-                        .HasColumnType("int(11)")
-                        .HasColumnName("fk_utente");
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Commento")
                         .HasMaxLength(200)
@@ -241,11 +184,11 @@ namespace Cinema.DataAccess.Migrations
                         .HasColumnType("int(11)")
                         .HasColumnName("valutazione");
 
-                    b.HasKey("FkFilm", "FkUtente")
+                    b.HasKey("FkFilm", "ApplicationUserId")
                         .HasName("PRIMARY")
                         .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
-                    b.HasIndex(new[] { "FkUtente" }, "fk_utente");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("valutazione", (string)null);
                 });
@@ -311,6 +254,10 @@ namespace Cinema.DataAccess.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
@@ -361,6 +308,10 @@ namespace Cinema.DataAccess.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -446,14 +397,36 @@ namespace Cinema.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Cinema.Models.ApplicationUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("Cognome")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ComuneRes")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Sesso")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
             modelBuilder.Entity("Cinema.Models.Biglietto", b =>
                 {
-                    b.HasOne("Cinema.Models.Utente", "FkUtenteNavigation")
+                    b.HasOne("Cinema.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Bigliettos")
-                        .HasForeignKey("FkUtente")
+                        .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("biglietto_ibfk_2");
+                        .IsRequired();
 
                     b.HasOne("Cinema.Models.Spettacolo", "Spettacolo")
                         .WithMany("Bigliettos")
@@ -462,7 +435,7 @@ namespace Cinema.DataAccess.Migrations
                         .IsRequired()
                         .HasConstraintName("biglietto_ibfk_1");
 
-                    b.Navigation("FkUtenteNavigation");
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Spettacolo");
                 });
@@ -502,6 +475,13 @@ namespace Cinema.DataAccess.Migrations
 
             modelBuilder.Entity("Cinema.Models.Valutazione", b =>
                 {
+                    b.HasOne("Cinema.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Valutaziones")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("valutazione_ibfk_2");
+
                     b.HasOne("Cinema.Models.Film", "FkFilmNavigation")
                         .WithMany("Valutaziones")
                         .HasForeignKey("FkFilm")
@@ -509,16 +489,9 @@ namespace Cinema.DataAccess.Migrations
                         .IsRequired()
                         .HasConstraintName("valutazione_ibfk_1");
 
-                    b.HasOne("Cinema.Models.Utente", "FkUtenteNavigation")
-                        .WithMany("Valutaziones")
-                        .HasForeignKey("FkUtente")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("valutazione_ibfk_2");
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("FkFilmNavigation");
-
-                    b.Navigation("FkUtenteNavigation");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -594,7 +567,7 @@ namespace Cinema.DataAccess.Migrations
                     b.Navigation("Bigliettos");
                 });
 
-            modelBuilder.Entity("Cinema.Models.Utente", b =>
+            modelBuilder.Entity("Cinema.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Bigliettos");
 

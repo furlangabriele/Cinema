@@ -1,4 +1,4 @@
-﻿using BulkyBook.DataAccess.Repository;
+﻿using Cinema.DataAccess.Repository;
 using Cinema.DataAccess.Repository.IRepository;
 using Cinema.Models;
 using Microsoft.AspNetCore.Mvc;

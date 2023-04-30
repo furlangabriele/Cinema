@@ -23,7 +23,7 @@ public partial class AppDbContext : IdentityDbContext<IdentityUser>
 
     public virtual DbSet<Spettacolo> Spettacolos { get; set; }
 
-    public virtual DbSet<Utente> Utentes { get; set; }
+    public virtual DbSet<ApplicationUser> Utentes { get; set; }
 
     public virtual DbSet<Valutazione> Valutaziones { get; set; }
 
@@ -37,7 +37,7 @@ public partial class AppDbContext : IdentityDbContext<IdentityUser>
 
         modelBuilder.Entity<Biglietto>(entity =>
         {
-            entity.HasKey(e => new { e.FkUtente, e.FkSala, e.FkFilm, e.Data, e.Orario, e.Fila, e.Posto })
+            entity.HasKey(e => new { e.ApplicationUserId, e.FkSala, e.FkFilm, e.Data, e.Orario, e.Fila, e.Posto })
                 .HasName("PRIMARY")
                 .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0, 0, 0, 0, 0, 0 });
 
@@ -45,9 +45,6 @@ public partial class AppDbContext : IdentityDbContext<IdentityUser>
 
             entity.HasIndex(e => new { e.FkSala, e.FkFilm, e.Data, e.Orario }, "fk_Sala");
 
-            entity.Property(e => e.FkUtente)
-                .HasColumnType("int(11)")
-                .HasColumnName("fk_utente");
             entity.Property(e => e.FkSala)
                 .HasColumnType("int(11)")
                 .HasColumnName("fk_Sala");
@@ -64,10 +61,6 @@ public partial class AppDbContext : IdentityDbContext<IdentityUser>
             entity.Property(e => e.Posto)
                 .HasColumnType("int(11)")
                 .HasColumnName("posto");
-
-            entity.HasOne(d => d.FkUtenteNavigation).WithMany(p => p.Bigliettos)
-                .HasForeignKey(d => d.FkUtente)
-                .HasConstraintName("biglietto_ibfk_2");
 
             entity.HasOne(d => d.Spettacolo).WithMany(p => p.Bigliettos)
                 .HasForeignKey(d => new { d.FkSala, d.FkFilm, d.Data, d.Orario })
@@ -163,55 +156,17 @@ public partial class AppDbContext : IdentityDbContext<IdentityUser>
                 .HasConstraintName("spettacolo_ibfk_1");
         });
 
-        modelBuilder.Entity<Utente>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("utente");
-
-            entity.HasIndex(e => e.Email, "email").IsUnique();
-
-            entity.Property(e => e.Id)
-                .HasColumnType("int(11)")
-                .HasColumnName("id");
-            entity.Property(e => e.Cognome)
-                .HasMaxLength(20)
-                .HasColumnName("cognome");
-            entity.Property(e => e.ComuneRes)
-                .HasMaxLength(20)
-                .HasColumnName("comuneRes");
-            entity.Property(e => e.DataNascita).HasColumnName("dataNascita");
-            entity.Property(e => e.Email)
-                .HasMaxLength(30)
-                .HasColumnName("email");
-            entity.Property(e => e.Nome)
-                .HasMaxLength(20)
-                .HasColumnName("nome");
-            entity.Property(e => e.Password)
-                .HasMaxLength(10)
-                .HasColumnName("password");
-            entity.Property(e => e.Sesso)
-                .HasMaxLength(1)
-                .IsFixedLength()
-                .HasColumnName("sesso");
-        });
-
         modelBuilder.Entity<Valutazione>(entity =>
         {
-            entity.HasKey(e => new { e.FkFilm, e.FkUtente })
+            entity.HasKey(e => new { e.FkFilm, e.ApplicationUserId })
                 .HasName("PRIMARY")
                 .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
             entity.ToTable("valutazione");
 
-            entity.HasIndex(e => e.FkUtente, "fk_utente");
-
             entity.Property(e => e.FkFilm)
                 .HasMaxLength(20)
                 .HasColumnName("fk_Film");
-            entity.Property(e => e.FkUtente)
-                .HasColumnType("int(11)")
-                .HasColumnName("fk_utente");
             entity.Property(e => e.Commento)
                 .HasMaxLength(200)
                 .HasColumnName("commento");
@@ -223,8 +178,8 @@ public partial class AppDbContext : IdentityDbContext<IdentityUser>
                 .HasForeignKey(d => d.FkFilm)
                 .HasConstraintName("valutazione_ibfk_1");
 
-            entity.HasOne(d => d.FkUtenteNavigation).WithMany(p => p.Valutaziones)
-                .HasForeignKey(d => d.FkUtente)
+            entity.HasOne(d => d.ApplicationUser).WithMany(p => p.Valutaziones)
+                .HasForeignKey(d => d.ApplicationUserId)
                 .HasConstraintName("valutazione_ibfk_2");
         });
 
