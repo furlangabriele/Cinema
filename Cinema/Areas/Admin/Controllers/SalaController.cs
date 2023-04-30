@@ -1,12 +1,16 @@
 ﻿using Cinema.DataAccess.Repository.IRepository;
 using Cinema.Models;
 using Cinema.Models.ViewModel;
+using Cinema.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace Cinema.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-	public class SalaController : Controller
+    [Authorize(Roles = SD.Role_Admin)]
+    public class SalaController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IWebHostEnvironment _hostEnvironment;

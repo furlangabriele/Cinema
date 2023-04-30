@@ -27,6 +27,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Cinema.DataAccess\Cinema.DataAccess.csproj" />
+	  <ProjectReference Include="..\Cinema.Utility\Cinema.Utility.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

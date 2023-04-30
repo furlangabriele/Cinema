@@ -1,12 +1,14 @@
 ﻿using Cinema.DataAccess.Repository;
 using Cinema.DataAccess.Repository.IRepository;
 using Cinema.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace Cinema.Areas.Customer.Controllers
 {
     [Area("Customer")]
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
