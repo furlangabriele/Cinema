@@ -1,13 +1,20 @@
-﻿@model IEnumerable<Film>
+﻿@using Cinema.Models.ViewModel;
+@model MieiFilmVM
 
 <div class="container">
-    @if(Model.Count() > 0)
+    @if(Model.Films.Count() > 0)
     {
-        @foreach(var item in Model)
+        @foreach(var item in Model.Films)
         {
             <div class="card">
                 <div class="card-header">
                     @item.Titolo
+                    @if (MieiFilmVM.HasValutazione(item.Titolo, Model.Valutazioni))
+                    {
+                        <div class="align-content-end">
+                            Il tuo voto: @Model.Valutazioni.Where(v => v.FkFilm == item.Titolo).First().Valutazione1
+                        </div>
+                    }
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -16,7 +23,15 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <a asp-action="NuovaRecensione" asp-controller="Valutazioni" asp-area="Customer" asp-route-id=@item.Titolo class="btn btn-dark">Inserirsci una recensione</a>
+                    @if (MieiFilmVM.HasValutazione(item.Titolo, Model.Valutazioni))
+                    {
+                        <a asp-action="ModificaRecensione" asp-controller="Valutazioni" asp-area="Customer" asp-route-id=@item.Titolo class="btn btn-info">Modifica recensione</a>
+                        <a asp-action="EliminaRecensione" asp-controller="Valutazioni" asp-area="Customer" asp-route-id=@item.Titolo class="btn btn-danger">Elimina recensione</a>
+                    }
+                    else
+                    {
+                        <a asp-action="NuovaRecensione" asp-controller="Valutazioni" asp-area="Customer" asp-route-id=@item.Titolo class="btn btn-dark">Inserirsci una recensione</a>
+                    }
                 </div>
             </div>
             <div class="p-2"></div>

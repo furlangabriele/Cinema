@@ -14,12 +14,12 @@
 		</div>
 		<div class="mb-3">
 			<label asp-for="Valutazione1"></label>
-			<input asp-for="Valutazione1" class="form-control" id="Valutazione" max="10" />
+			<input asp-for="Valutazione1" class="form-control" id="Valutazione" value="@Model.Valutazione1" max="10"/>
 			<span asp-validation-for="Valutazione1" class="text-danger"></span>
 		</div>
 		<div class="mb-3">
 			<label asp-for="Commento"></label>
-			<textarea asp-for="Commento" class="form-control" id="Valutazione"></textarea>
+			<textarea asp-for="Commento" class="form-control" id="Valutazione">@Model.Commento</textarea>
 			<span asp-validation-for="Commento" class="text-danger"></span>
 		</div>
 		<button type="submit" class="btn btn-primary" style="width:150px">Aggiungi recensione</button>

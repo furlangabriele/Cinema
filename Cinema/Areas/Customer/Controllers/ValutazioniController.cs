@@ -1,5 +1,6 @@
 ﻿using Cinema.DataAccess.Repository.IRepository;
 using Cinema.Models;
+using Cinema.Models.ViewModel;
 using Cinema.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -50,7 +51,13 @@ namespace Cinema.Areas.Customer.Controllers
                     films.Add(film);
                 }
             }
-            return View(films);
+            var valutazioni = _unitOfWork.Valutazione.GetAll().Where(v => v.ApplicationUserId == applicationUserId);
+            var vm = new MieiFilmVM
+            {
+                Valutazioni = valutazioni,
+                Films = films,
+            };
+            return View(vm);
         }
         [Authorize(Roles = SD.Role_Customer)]
         public IActionResult NuovaRecensione(string? id)
@@ -78,6 +85,55 @@ namespace Cinema.Areas.Customer.Controllers
             _unitOfWork.Valutazione.Add(obj);
             _unitOfWork.Save();
             TempData["success"] = "valutazione created successfully";
+            return RedirectToAction("Index");
+        }
+        [Authorize(Roles = SD.Role_Customer)]
+        public IActionResult ModificaRecensione(string? id)
+        {
+            var userIdentity = User.Identity;
+            var claimsIdentity = (ClaimsIdentity)userIdentity;
+            var claim = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
+            string applicationUserId = null;
+            if (claim == null)
+            {
+                return Redirect("/");
+            }
+            applicationUserId = claim.Value;
+            var valscelta = _unitOfWork.Valutazione.GetAll().Where(v => v.FkFilm == id && v.ApplicationUserId == applicationUserId).FirstOrDefault();
+            if( valscelta == null)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(valscelta);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ModificaRecensione(Valutazione obj)
+        {
+            _unitOfWork.Valutazione.Update(obj);
+            _unitOfWork.Save();
+            TempData["success"] = "valutazione created successfully";
+            return RedirectToAction("Index");
+        }
+        [Authorize(Roles = SD.Role_Customer)]
+        public IActionResult EliminaRecensione(string? id)
+        {
+            var userIdentity = User.Identity;
+            var claimsIdentity = (ClaimsIdentity)userIdentity;
+            var claim = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
+            string applicationUserId = null;
+            if (claim == null)
+            {
+                return Redirect("/");
+            }
+            applicationUserId = claim.Value;
+            var valutazione = new Valutazione()
+            {
+                FkFilm = id,
+                ApplicationUserId = applicationUserId,
+            };
+            _unitOfWork.Valutazione.Remove(valutazione);
+            _unitOfWork.Save();
             return RedirectToAction("Index");
         }
     }

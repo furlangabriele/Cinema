@@ -12,7 +12,6 @@ public partial class Valutazione
     [ValidateNever]
     public ApplicationUser ApplicationUser { get; set; } = null!;
     public string FkFilm { get; set; } = null!;
-
     public int Valutazione1 { get; set; }
 
     public string? Commento { get; set; }
