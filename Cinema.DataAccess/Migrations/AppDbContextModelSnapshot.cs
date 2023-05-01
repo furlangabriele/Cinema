@@ -27,22 +27,8 @@ namespace Cinema.DataAccess.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int>("FkSala")
-                        .HasColumnType("int(11)")
-                        .HasColumnName("fk_Sala");
-
-                    b.Property<string>("FkFilm")
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("fk_Film");
-
-                    b.Property<DateOnly>("Data")
-                        .HasColumnType("date")
-                        .HasColumnName("data");
-
-                    b.Property<TimeOnly>("Orario")
-                        .HasColumnType("time")
-                        .HasColumnName("orario");
+                    b.Property<int>("SpettacoloId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Fila")
                         .HasColumnType("int(11)")
@@ -52,11 +38,15 @@ namespace Cinema.DataAccess.Migrations
                         .HasColumnType("int(11)")
                         .HasColumnName("posto");
 
-                    b.HasKey("ApplicationUserId", "FkSala", "FkFilm", "Data", "Orario", "Fila", "Posto")
+                    b.Property<bool>("Pagato")
+                        .HasColumnType("TINYINT(1)")
+                        .HasColumnName("Pagato");
+
+                    b.HasKey("ApplicationUserId", "SpettacoloId", "Fila", "Posto")
                         .HasName("PRIMARY")
                         .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0, 0, 0, 0, 0, 0 });
 
-                    b.HasIndex(new[] { "FkSala", "FkFilm", "Data", "Orario" }, "fk_Sala");
+                    b.HasIndex("SpettacoloId");
 
                     b.ToTable("biglietto", (string)null);
                 });
@@ -136,26 +126,33 @@ namespace Cinema.DataAccess.Migrations
 
             modelBuilder.Entity("Cinema.Models.Spettacolo", b =>
                 {
-                    b.Property<int>("FkSala")
-                        .HasColumnType("int(11)")
-                        .HasColumnName("fk_Sala");
-
-                    b.Property<string>("FkFilm")
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("fk_Film");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
                     b.Property<DateOnly>("Data")
                         .HasColumnType("date")
                         .HasColumnName("data");
 
+                    b.Property<string>("FkFilm")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("fk_Film");
+
+                    b.Property<int>("FkSala")
+                        .HasColumnType("int(11)")
+                        .HasColumnName("fk_Sala");
+
                     b.Property<TimeOnly>("Orario")
                         .HasColumnType("time")
                         .HasColumnName("orario");
 
-                    b.HasKey("FkSala", "FkFilm", "Data", "Orario")
+                    b.HasKey("Id")
                         .HasName("PRIMARY")
                         .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0, 0, 0 });
+
+                    b.HasIndex("FkSala");
 
                     b.HasIndex(new[] { "FkFilm" }, "fk_Film");
 
@@ -337,12 +334,10 @@ namespace Cinema.DataAccess.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("varchar(128)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("varchar(128)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("longtext");
@@ -379,12 +374,10 @@ namespace Cinema.DataAccess.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("varchar(128)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("varchar(128)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Value")
                         .HasColumnType("longtext");
@@ -427,7 +420,7 @@ namespace Cinema.DataAccess.Migrations
 
                     b.HasOne("Cinema.Models.Spettacolo", "Spettacolo")
                         .WithMany("Bigliettos")
-                        .HasForeignKey("FkSala", "FkFilm", "Data", "Orario")
+                        .HasForeignKey("SpettacoloId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("biglietto_ibfk_1");

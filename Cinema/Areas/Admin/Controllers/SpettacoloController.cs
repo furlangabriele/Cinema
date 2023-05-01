@@ -27,7 +27,7 @@ namespace Cinema.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult Upsert(int? fkSala, string? fkFilm, DateOnly data, TimeOnly orario)
+        public IActionResult Upsert(int id)
         {
             SpettacoloVM spettacolo = new SpettacoloVM
             {
@@ -44,7 +44,7 @@ namespace Cinema.Areas.Admin.Controllers
                 }),
             };
 
-            if (fkFilm == null)
+            if (id == null || id == 0)
             {
                 //create product
                 //ViewBag.CategoryList = CategoryList;
@@ -55,8 +55,8 @@ namespace Cinema.Areas.Admin.Controllers
             }
             else
             {
-                spettacolo.Spettacolo = _unitOfWork.Spettacolo.GetFirstOrDefault(u => fkSala == u.FkSala && fkFilm == u.FkFilm && orario == u.Orario && data == u.Data);
-                ViewData["Title"] = $"Aggiorna spettacolo del {data} di {fkFilm} in sala {fkSala}";
+                spettacolo.Spettacolo = _unitOfWork.Spettacolo.GetFirstOrDefault(u => u.Id == id);
+                ViewData["Title"] = $"Aggiorna spettacolo del {spettacolo.Spettacolo.Data} di {spettacolo.Spettacolo.FkFilm} in sala {spettacolo.Spettacolo.FkSala}";
                 TempData["old_film"] = spettacolo.Spettacolo.FkFilm;
                 TempData["old_sala"] = spettacolo.Spettacolo.FkSala;
                 TempData["old_orario"] = spettacolo.Spettacolo.Orario.ToString();

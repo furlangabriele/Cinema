@@ -31,7 +31,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Spettacolo del giorno @item.Data</h5>
                             <p class="card-text">Lo spettacolo si svolgerà a partire dalle ore @item.Orario nella sala @item.FkSala</p>
-                            <a href="/Customer/Biglietto/Index?FkSala=@item.FkSala&FkFilm=@item.FkFilm&Orario=@item.Orario&Data=@item.Data" class="btn btn-primary">Prenota il tuo posto</a>
+                            <a href="/Customer/Biglietto/Index/@item.Id" class="btn btn-primary">Prenota il tuo posto</a>
                         </div>
                     </div>
                 </div>

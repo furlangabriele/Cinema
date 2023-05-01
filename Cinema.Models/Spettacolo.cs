@@ -8,6 +8,7 @@ namespace Cinema.Models;
 
 public partial class Spettacolo
 {
+    public int Id { get; set; }
     public int FkSala { get; set; }
 
     public string FkFilm { get; set; } = null!;

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Cinema.Areas.Customer.Controllers
 {
@@ -22,15 +21,15 @@ namespace Cinema.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
         }
         [Authorize(Roles = SD.Role_Customer)]
-        public IActionResult Index(int? FkSala, string? FkFilm, DateOnly Data, TimeOnly Orario)
+        public IActionResult Index(int id)
         {
-            var bigliettiSpettacolo = _unitOfWork.Biglietto.GetAll().Where(b => b.FkSala == FkSala && FkFilm == b.FkFilm && Data == b.Data && Orario == b.Orario);
+            var bigliettiSpettacolo = _unitOfWork.Biglietto.GetAll().Where(b => b.SpettacoloId == id);
             List<string> postiDisponibili = new List<string>();
             for (int i = 1; i < 8; i++)
             {
                 for (int j = 1; j < 15; j++)
                 {
-                    if(bigliettiSpettacolo.Where(b => b.Fila == i && b.Posto == j).Count() == 0)
+                    if (bigliettiSpettacolo.Where(b => b.Fila == i && b.Posto == j).Count() == 0)
                     {
                         postiDisponibili.Add($"{j}_{i}");
                     }
@@ -41,10 +40,7 @@ namespace Cinema.Areas.Customer.Controllers
                 Text = $"Posto: {p.Split('_')[0]} Fila: {p.Split('_')[1]}",
                 Value = p
             });
-            TempData["Sala"] = (int)FkSala;
-            TempData["Film"] = FkFilm;
-            TempData["Ora"] = Orario.ToString();
-            TempData["Data"] = Data.ToString();
+            TempData["spettacolo"] = id;
             return View(posti);
         }
         [Authorize(Roles = SD.Role_Customer)]
@@ -64,15 +60,12 @@ namespace Cinema.Areas.Customer.Controllers
                 applicationUserId = claim.Value;
                 var biglietto = new Biglietto
                 {
-                    FkSala = (int)TempData["Sala"],
-                    FkFilm = (string)TempData["Film"],
-                    Data = DateOnly.Parse((string)TempData["Data"]),
-                    Orario = TimeOnly.Parse((string)TempData["Ora"]),
+                    SpettacoloId = (int)TempData["spettacolo"],
                     ApplicationUserId = applicationUserId,
                     Posto = int.Parse(arr[0]),
                     Fila = int.Parse(arr[1])
                 };
-                if (_unitOfWork.Biglietto.GetAll().Where(b => b.ApplicationUserId == applicationUserId && b.FkSala == biglietto.FkSala && biglietto.FkFilm == b.FkFilm && biglietto.Data == b.Data && biglietto.Orario == b.Orario).Count() >= 4)
+                if (_unitOfWork.Biglietto.GetAll().Where(b => b.ApplicationUserId == applicationUserId && b.SpettacoloId == biglietto.SpettacoloId).Count() >= 4)
                 {
                     TempData["message"] = "Hai già 4 biglietti del seguente spettacolo non ne puoi acquistare altri";
                 }
@@ -81,7 +74,7 @@ namespace Cinema.Areas.Customer.Controllers
                     _unitOfWork.Biglietto.Add(biglietto);
                     _unitOfWork.Save();
                 }
-                return Redirect($"/Customer/Biglietto?FkSala={biglietto.FkSala}&FkFilm={biglietto.FkFilm}&Orario={biglietto.Orario}&Data={biglietto.Data}");
+                return Redirect($"/Customer/Biglietto/Index/{TempData["spettacolo"]}");
             }
             catch (Exception)
             {

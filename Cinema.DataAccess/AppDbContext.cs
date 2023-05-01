@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Cinema.Models;
+using Azure;
 
 namespace Cinema.DataAccess;
 
@@ -37,24 +38,12 @@ public partial class AppDbContext : IdentityDbContext<IdentityUser>
 
         modelBuilder.Entity<Biglietto>(entity =>
         {
-            entity.HasKey(e => new { e.ApplicationUserId, e.FkSala, e.FkFilm, e.Data, e.Orario, e.Fila, e.Posto })
+            entity.HasKey(e => new { e.ApplicationUserId, e.SpettacoloId, e.Fila, e.Posto })
                 .HasName("PRIMARY")
                 .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0, 0, 0, 0, 0, 0 });
 
             entity.ToTable("biglietto");
 
-            entity.HasIndex(e => new { e.FkSala, e.FkFilm, e.Data, e.Orario }, "fk_Sala");
-
-            entity.Property(e => e.FkSala)
-                .HasColumnType("int(11)")
-                .HasColumnName("fk_Sala");
-            entity.Property(e => e.FkFilm)
-                .HasMaxLength(20)
-                .HasColumnName("fk_Film");
-            entity.Property(e => e.Data).HasColumnName("data");
-            entity.Property(e => e.Orario)
-                .HasColumnType("time")
-                .HasColumnName("orario");
             entity.Property(e => e.Fila)
                 .HasColumnType("int(11)")
                 .HasColumnName("fila");
@@ -62,8 +51,12 @@ public partial class AppDbContext : IdentityDbContext<IdentityUser>
                 .HasColumnType("int(11)")
                 .HasColumnName("posto");
 
+            entity.Property(e => e.Pagato)
+               .HasColumnType("TINYINT(1)")
+               .HasColumnName("Pagato");
+
             entity.HasOne(d => d.Spettacolo).WithMany(p => p.Bigliettos)
-                .HasForeignKey(d => new { d.FkSala, d.FkFilm, d.Data, d.Orario })
+                .HasForeignKey(d => new { d.SpettacoloId })
                 .HasConstraintName("biglietto_ibfk_1");
         });
 
@@ -128,13 +121,17 @@ public partial class AppDbContext : IdentityDbContext<IdentityUser>
 
         modelBuilder.Entity<Spettacolo>(entity =>
         {
-            entity.HasKey(e => new { e.FkSala, e.FkFilm, e.Data, e.Orario })
+            entity.HasKey(e => new { e.Id })
                 .HasName("PRIMARY")
                 .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0, 0, 0 });
 
             entity.ToTable("spettacolo");
 
             entity.HasIndex(e => e.FkFilm, "fk_Film");
+
+            entity
+               .Property(p => p.Id)
+               .ValueGeneratedOnAdd();
 
             entity.Property(e => e.FkSala)
                 .HasColumnType("int(11)")
