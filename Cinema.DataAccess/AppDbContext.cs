@@ -38,11 +38,15 @@ public partial class AppDbContext : IdentityDbContext<IdentityUser>
 
         modelBuilder.Entity<Biglietto>(entity =>
         {
-            entity.HasKey(e => new { e.ApplicationUserId, e.SpettacoloId, e.Fila, e.Posto })
+            entity.HasKey(e => new { e.Id })
                 .HasName("PRIMARY")
                 .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0, 0, 0, 0, 0, 0 });
 
             entity.ToTable("biglietto");
+
+            entity
+               .Property(e => e.Id)
+               .ValueGeneratedOnAdd();
 
             entity.Property(e => e.Fila)
                 .HasColumnType("int(11)")

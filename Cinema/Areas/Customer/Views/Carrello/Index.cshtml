@@ -1,6 +1,37 @@
-﻿@model IEnumerable<Biglietto>
+﻿@using Cinema.Models.ViewModel;
 
-<div class="container">
-    <h4 class="text-black">I tuoi biglietti:</h4>
-</div>
+@model CarrelloVM
 
+@if (Model.Biglietti.Count() > 0)
+{
+    <div class="container">
+        <h4 class="text-black">I tuoi biglietti:</h4><br />
+        <h6 class="text-info">Il costo totale del tuo carrello è di @Model.Prezzo</h6>
+    </div>
+
+    <div class="container">
+        @foreach (var item in Model.Biglietti)
+        {
+            <div class="card">
+                <div class="card-header">
+                    @(Model.Spettacoli.Where(s => s.Id == item.SpettacoloId).First().Data)
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@(Model.Spettacoli.Where(s => s.Id == item.SpettacoloId).First().FkFilm)</h5>
+                    <p class="card-text">Sala numero: @(Model.Spettacoli.Where(s => s.Id == item.SpettacoloId).First().FkSala) -- Posto @item.Posto -- Fila @item.Fila</p>
+                    <a asp-action="Index" asp-controller="Paga" asp-area="Customer" asp-route-id=@item.Id class="btn btn-primary">Acquista</a>
+                    <a onclick=Delete('/Customer/Biglietto/Delete/@item.Id') class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                </div>
+            </div>
+            <div class="p-2"></div>
+        }
+    </div>
+}
+else
+{
+    <div class="container">Il tuo carrello è vuoto al momento seleziona un film ed uno spettacolo per aggiungere un biglietto al tuo carrello</div>
+}
+
+@section Scripts{
+    <script src="~/js/Biglietto.js"></script>
+}

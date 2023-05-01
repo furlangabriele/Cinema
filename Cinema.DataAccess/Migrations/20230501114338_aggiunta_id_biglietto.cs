@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Cinema.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class fixedstructure : Migration
+    public partial class aggiunta_id_biglietto : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -338,6 +338,8 @@ namespace Cinema.DataAccess.Migrations
                 name: "biglietto",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     ApplicationUserId = table.Column<string>(type: "varchar(255)", nullable: false, collation: "latin1_swedish_ci")
                         .Annotation("MySql:CharSet", "latin1"),
                     SpettacoloId = table.Column<int>(type: "int", nullable: false),
@@ -347,7 +349,7 @@ namespace Cinema.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PRIMARY", x => new { x.ApplicationUserId, x.SpettacoloId, x.fila, x.posto })
+                    table.PrimaryKey("PRIMARY", x => x.Id)
                         .Annotation("MySql:IndexPrefixLength", new[] { 0, 0, 0, 0, 0, 0, 0 });
                     table.ForeignKey(
                         name: "FK_biglietto_AspNetUsers_ApplicationUserId",
@@ -401,6 +403,11 @@ namespace Cinema.DataAccess.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_biglietto_ApplicationUserId",
+                table: "biglietto",
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_biglietto_SpettacoloId",

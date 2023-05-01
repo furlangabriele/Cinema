@@ -24,27 +24,34 @@ namespace Cinema.DataAccess.Migrations
 
             modelBuilder.Entity("Cinema.Models.Biglietto", b =>
                 {
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<int>("SpettacoloId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("Fila")
                         .HasColumnType("int(11)")
                         .HasColumnName("fila");
 
-                    b.Property<int>("Posto")
-                        .HasColumnType("int(11)")
-                        .HasColumnName("posto");
-
                     b.Property<bool>("Pagato")
                         .HasColumnType("TINYINT(1)")
                         .HasColumnName("Pagato");
 
-                    b.HasKey("ApplicationUserId", "SpettacoloId", "Fila", "Posto")
+                    b.Property<int>("Posto")
+                        .HasColumnType("int(11)")
+                        .HasColumnName("posto");
+
+                    b.Property<int>("SpettacoloId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id")
                         .HasName("PRIMARY")
                         .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0, 0, 0, 0, 0, 0 });
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("SpettacoloId");
 

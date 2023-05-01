@@ -1,0 +1,30 @@
+﻿@model Valutazione
+
+<form method="post">
+	<div class="border p-3 mt-4">
+		<div class="row pb-2">
+			<h2 class="text-primary">Aggiungi una recensione di @Model.FkFilm</h2>
+			<hr />
+		</div>
+		<div class="mb-3" aria-hidden="true">
+			<input asp-for="FkFilm" class="form-control" id="Valutazione" type="hidden" value="@Model.FkFilm"/>
+		</div>
+		<div class="mb-3" aria-hidden="true">
+			<input asp-for="ApplicationUserId" class="form-control" id="Valutazione" type="hidden" value="@Model.ApplicationUserId" />
+		</div>
+		<div class="mb-3">
+			<label asp-for="Valutazione1"></label>
+			<input asp-for="Valutazione1" class="form-control" id="Valutazione"/>
+			<span asp-validation-for="Valutazione1" class="text-danger"></span>
+		</div>
+		<div class="mb-3">
+			<label asp-for="Commento"></label>
+			<textarea asp-for="Commento" class="form-control" id="Valutazione"></textarea>
+			<span asp-validation-for="Commento" class="text-danger"></span>
+		</div>
+		<button type="submit" class="btn btn-primary" style="width:150px">Aggiungi recensione</button>
+		<a asp-controller="Valutazioni" asp-action="Index" class="btn btn-secondary" style="width:150px">
+			Torna a i miei film
+		</a>
+	</div>
+</form>

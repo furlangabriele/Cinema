@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Film>
+
+<div class="container">
+    @if(Model.Count() > 0)
+    {
+        @foreach(var item in Model)
+        {
+            <div class="card">
+                <div class="card-header">
+                    @item.Titolo
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4"><img src="@item.UrlImmPub" height="150px" /></div>
+                        <div class="col-8"><h5 class="card-title">Descrizione: @item.Descrizione</h5></div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="NuovaRecensione" asp-controller="Valutazioni" asp-area="Customer" asp-route-id=@item.Titolo class="btn btn-dark">Inserirsci una recensione</a>
+                </div>
+            </div>
+            <div class="p-2"></div>
+        }
+    }
+    else
+    {
+        <h4 class="text-black">Non hai ancora visto nessun film compra un biglietto per poter inserire una recensione</h4>
+    }
+</div>

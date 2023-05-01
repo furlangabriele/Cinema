@@ -8,6 +8,7 @@ namespace Cinema.Models;
 
 public partial class Biglietto
 {
+    public int Id { get; set; }
     public string ApplicationUserId { get; set; } = null!;
     [ForeignKey(nameof(ApplicationUserId))]
     [ValidateNever]

@@ -1,4 +1,5 @@
 ﻿using Cinema.DataAccess.Repository.IRepository;
+using Cinema.Models.ViewModel;
 using Cinema.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,8 +31,16 @@ namespace Cinema.Areas.Customer.Controllers
                 return Redirect("/");
             }
             applicationUserId = claim.Value;
-            var biglietti_utente = _unitOfWork.Biglietto.GetAll().Where(b => b.ApplicationUserId == applicationUserId);
-            return View(biglietti_utente);
+            var biglietti_utente = _unitOfWork.Biglietto.GetAll().Where(b => b.ApplicationUserId == applicationUserId && b.Pagato == false);
+            var spettacoli = _unitOfWork.Spettacolo.GetAll();
+            int prezzo = biglietti_utente.Count() * 5;
+            var carrello = new CarrelloVM
+            {
+                Biglietti = biglietti_utente,
+                Prezzo= prezzo,
+                Spettacoli = spettacoli
+            };
+            return View(carrello);
         }
     }
 }

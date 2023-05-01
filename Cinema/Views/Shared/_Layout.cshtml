@@ -21,26 +21,31 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Area Amministratore</a>
-                            <div class="dropdown-menu">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Spettacolo" asp-action="Index">Spettacolo</a>
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Sala" asp-action="Index">Sala</a>
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Film" asp-action="Index">Film</a>
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Genere" asp-action="Index">Genere</a>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Customer" asp-controller="Carrello" asp-action="Index">
-                                <i class="bi bi-cart"></i>
-                            </a>
-                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Area Amministratore</a>
+                                <div class="dropdown-menu">
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Spettacolo" asp-action="Index">Spettacolo</a>
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Sala" asp-action="Index">Sala</a>
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Film" asp-action="Index">Film</a>
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Genere" asp-action="Index">Genere</a>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Customer" asp-controller="Valutazioni" asp-action="Index">
+                                    I film che hai visto
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Customer" asp-controller="Carrello" asp-action="Index">
+                                    <i class="bi bi-cart"></i>
+                                </a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

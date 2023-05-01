@@ -1,4 +1,5 @@
-﻿using Cinema.DataAccess.Repository.IRepository;
+﻿using Cinema.DataAccess.Repository;
+using Cinema.DataAccess.Repository.IRepository;
 using Cinema.Models;
 using Cinema.Utility;
 using Microsoft.AspNetCore.Authorization;
@@ -80,6 +81,22 @@ namespace Cinema.Areas.Customer.Controllers
             {
                 return NotFound();
             }
+        }
+        //POST
+        [HttpDelete]
+        [AllowAnonymous]
+        public IActionResult Delete(int id)
+        {
+            var obj = _unitOfWork.Biglietto.GetFirstOrDefault(u => u.Id == id);
+            if (obj == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+
+            _unitOfWork.Biglietto.Remove(obj);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Delete Successful" });
+
         }
     }
 }
