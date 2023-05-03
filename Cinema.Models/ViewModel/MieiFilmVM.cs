@@ -12,7 +12,7 @@ namespace Cinema.Models.ViewModel
         public IEnumerable<Valutazione> Valutazioni { get; set; }
         public static bool HasValutazione(string id, IEnumerable<Valutazione> valutazioni)
         {
-            return valutazioni.Count() > 0 && valutazioni.Where(v => v.FkFilm == id).First() != null;
+            return valutazioni.Count() > 0 && valutazioni.Where(v => v.FkFilm == id).FirstOrDefault() != null;
         }
     }
 }

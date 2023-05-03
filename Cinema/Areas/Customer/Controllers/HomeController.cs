@@ -38,8 +38,14 @@ namespace Cinema.Areas.Customer.Controllers
         {
             return View();
         }
+        public IActionResult Recensioni(string id)
+        {
+            var recensioni = _unitOfWork.Valutazione.GetAll().Where(v => v.FkFilm == id);
+            ViewData["navbar"] = false;
+            return View(recensioni);
+        }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]    
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

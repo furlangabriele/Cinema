@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<SelectListItem>
 
-<link rel="stylesheet" href="~/css/tickets5.css" />
+<link rel="stylesheet" href="~/css/tickets6.css" />
 
 <form class="movie-container" asp-action="CreaBiglietto" asp-area="Customer">
     <h2>Scegli i tuoi posti</h2>
@@ -25,7 +25,7 @@
                         <div class="seat active" id="@i-1"></div>
                         continue;
                     }
-                    <div class="seat" id="@i-1"></div>
+                    <div class="seat" id="@i-1" onclick="AggiungiItem(this.id)"></div>
                 }
             </div>
 
@@ -192,4 +192,4 @@
     </div>
 </div>
 
-<script src="~/js/tickets4.js"></script>
+<script src="~/js/prenotazioneBiglietti2.js"></script>

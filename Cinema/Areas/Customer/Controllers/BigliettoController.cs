@@ -38,7 +38,7 @@ namespace Cinema.Areas.Customer.Controllers
             }
             var posti = postiDisponibili.Select(p => new SelectListItem
             {
-                Text = $"Posto: {p.Split('_')[1]} Fila: {p.Split('_')[0]}",
+                Text = $"Posto: {p.Split('_')[0]} Fila: {p.Split('_')[1]}",
                 Value = p
             });
             TempData["spettacolo"] = id;

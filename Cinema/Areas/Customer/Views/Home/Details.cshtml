@@ -1,45 +1,53 @@
 ﻿@model Film
 
 <div class="container">
-    <img src="@Model.UrlImmPub" class="card-img-top rounded" style="height: 300px;width:auto;"/>
-
-    <div class="card-body">
-        <div class="pl-1">
-            <p class="card-title h5 text-primary">@Model.Titolo</p>
-            <p class="card-title text-info">Genere: <b>@Model.Genere</b></p>
+    <div class="row">
+        <div class="card col-6">
+            <div class="card-body">
+                <div class="pl-1">
+                    <img src="@Model.UrlImmPub" class="card-img-top rounded" style="height: 300px;width:auto;padding-bottom:30px;" />
+                    <p class="card-title h5 text-primary">@Model.Titolo</p>
+                    <p class="card-title text-info">Genere: <b>@Model.Genere</b></p>
+                </div>
+                <div class="pl-1">
+                    <p>Descrizione: <b>@Model.Descrizione</b></p>
+                </div>
+                <div class="pl-1">
+                    <p>Anno di produzione: <b>@Model.AnnoProd</b></p>
+                </div>
+                <div class="pl-1">
+                    <p>Durata: <b>@Model.Durata</b></p>
+                </div>
+            </div>
         </div>
-        <div class="pl-1">
-            <p>Descrizione: <b>@Model.Descrizione</b></p>
-        </div>
-        <div class="pl-1">
-            <p>Anno di produzione: <b>@Model.AnnoProd</b></p>
-        </div>
-        <div class="pl-1">
-            <p>Durata: <b>@Model.Durata</b></p>
+        <div class="col-6">
+            <iframe src="@Url.Action("Recensioni","Home", new { id = Model.Titolo})" width="100%" height="300px"></iframe>
         </div>
     </div>
 </div>
-@if(((IEnumerable<Spettacolo>)ViewBag.spettacoli).Count() != 0)
-{
-    <div class="container">
-        Spettacoli con questo film:
-        <div class="row">
-            @foreach(var item in ViewBag.spettacoli)
-            {
-                <div class="col-sm-6 p-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Spettacolo del giorno @item.Data</h5>
-                            <p class="card-text">Lo spettacolo si svolgerà a partire dalle ore @item.Orario nella sala @item.FkSala</p>
-                            <a href="/Customer/Biglietto/Index/@item.Id" class="btn btn-primary">Prenota il tuo posto</a>
+<div class="container">
+    @if(((IEnumerable<Spettacolo>)ViewBag.spettacoli).Count() != 0)
+    {
+        <div class="container">
+            Spettacoli con questo film:
+            <div class="row">
+                @foreach(var item in ViewBag.spettacoli)
+                {
+                    <div class="col-sm-6 p-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Spettacolo del giorno @item.Data</h5>
+                                <p class="card-text">Lo spettacolo si svolgerà a partire dalle ore @item.Orario nella sala @item.FkSala</p>
+                                <a href="/Customer/Biglietto/Index/@item.Id" class="btn btn-primary">Prenota il tuo posto</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
-    </div>
-} else {
-    <div class="container">
-        Al momento non sono disponibili spettacoli per il seguente film
-    </div>
-}
+    } else {
+        <div class="container">
+            Al momento non sono disponibili spettacoli per il seguente film
+        </div>
+    }
+</div>
