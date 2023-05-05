@@ -11,7 +11,6 @@ using System.Data;
 namespace Cinema.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Admin)]
     public class FilmController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -22,12 +21,14 @@ namespace Cinema.Areas.Admin.Controllers
             _unitOfWork = unitOfWork;
             _hostEnvironment = hostEnvironment;
         }
-        public IActionResult Index()
+		[Authorize(Roles = SD.Role_Admin)]
+		public IActionResult Index()
         {
             ViewData["Title"] = "Operazioni di modifica dei film";
             return View();
         }
-        public IActionResult Upsert(string? id)
+		[Authorize(Roles = SD.Role_Admin)]
+		public IActionResult Upsert(string? id)
         {
             FilmVM filmVM = new()
             {
@@ -60,8 +61,9 @@ namespace Cinema.Areas.Admin.Controllers
 
         }
 
-        //POST
-        [HttpPost]
+		//POST
+		[Authorize(Roles = SD.Role_Admin)]
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Upsert(FilmVM obj, IFormFile? file)
         {
@@ -111,6 +113,7 @@ namespace Cinema.Areas.Admin.Controllers
 
         #region API CALLS
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetAll()
         {
             var productList = _unitOfWork.Film.GetAll();

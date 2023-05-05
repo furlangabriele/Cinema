@@ -22,9 +22,9 @@ namespace Cinema.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-			IEnumerable<Film> films = _unitOfWork.Film.GetAll();
+			//IEnumerable<Film> films = _unitOfWork.Film.GetAll();
 			ViewData["Title"] = "HomePage";
-			return View(films);
+			return View();
         }
 		public IActionResult Details(string id)
 		{

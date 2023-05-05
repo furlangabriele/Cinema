@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Cinema.Models.Film>
+﻿@*@model IEnumerable<Cinema.Models.Film>
 
 
 <div class="row pb-3">
@@ -32,4 +32,34 @@
 			</div>
 		</div>
 	}
+</div>*@
+
+<link rel="stylesheet" href="~/css/homeFilm.css" />
+
+<div class="container p-3">
+
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Film List</h2>
+            @*            <div class="alert alert-primary" role="alert">
+            Row data: <span id="row-data"></span>
+            </div>*@
+        </div>
+
+    </div>
+    <br /><br />
+    <table id="tblData" class="table table-bordered table-striped cards" style="width:100%;  ">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Titolo</th>
+                <th>Durata</th>
+                <th>AnnoProd</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
 </div>
+@section Scripts{
+    <script src="~/js/homeFilm.js"></script>
+}
