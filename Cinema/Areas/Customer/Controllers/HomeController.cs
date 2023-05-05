@@ -1,9 +1,11 @@
 ﻿using Cinema.DataAccess.Repository;
 using Cinema.DataAccess.Repository.IRepository;
 using Cinema.Models;
+using Cinema.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace Cinema.Areas.Customer.Controllers
 {
@@ -24,7 +26,11 @@ namespace Cinema.Areas.Customer.Controllers
         {
 			//IEnumerable<Film> films = _unitOfWork.Film.GetAll();
 			ViewData["Title"] = "HomePage";
-			return View();
+            if (User.IsInRole(SD.Role_Admin))
+            {
+                return Redirect("/Admin/Analitica");
+            }
+            return View();
         }
 		public IActionResult Details(string id)
 		{
