@@ -99,7 +99,7 @@ namespace Cinema.Areas.Customer.Controllers
             var spettacoli = _unitOfWork.Spettacolo.GetAll();
             var myVM = new MieiBigliettiVM
             {
-                bigliettos = listabiglietti,
+                bigliettos = listabiglietti.OrderByDescending(b => b.Id),
                 Spettacolos = spettacoli
             };
             return View(myVM);
