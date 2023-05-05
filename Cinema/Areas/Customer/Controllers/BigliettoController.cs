@@ -1,6 +1,7 @@
 ﻿using Cinema.DataAccess.Repository;
 using Cinema.DataAccess.Repository.IRepository;
 using Cinema.Models;
+using Cinema.Models.ViewModel;
 using Cinema.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -81,6 +82,27 @@ namespace Cinema.Areas.Customer.Controllers
             {
                 return NotFound();
             }
+        }
+        [Authorize(Roles = SD.Role_Customer)]
+        public IActionResult IMieiBiglietti()
+        {
+            var userIdentity = User.Identity;
+            var claimsIdentity = (ClaimsIdentity)userIdentity;
+            var claim = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
+            string applicationUserId = null;
+            if (claim == null)
+            {
+                return Redirect("/");
+            }
+            applicationUserId = claim.Value;
+            var listabiglietti = _unitOfWork.Biglietto.GetAll().Where(b => b.ApplicationUserId == applicationUserId );
+            var spettacoli = _unitOfWork.Spettacolo.GetAll();
+            var myVM = new MieiBigliettiVM
+            {
+                bigliettos = listabiglietti,
+                Spettacolos = spettacoli
+            };
+            return View(myVM);
         }
         //POST
         [HttpDelete]

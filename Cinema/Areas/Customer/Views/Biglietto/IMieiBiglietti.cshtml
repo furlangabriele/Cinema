@@ -1,0 +1,52 @@
+﻿@using Cinema.Models.ViewModel
+@model MieiBigliettiVM
+
+<link rel="stylesheet" href="~/css/designBiglietto1.css" />
+
+@foreach (var item in Model.bigliettos)
+{
+    <div class="contenido">
+        <div class="ticket">
+            <div class="hqr">
+                <div class="column left-one"></div>
+                <div class="column center">
+                    <div id="qrcode-@item.Id" onclick="makeCode(this.id, @item.Id)" class="qrcode">
+                        <div class="container">
+                            <i class="bi bi-eye"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="column right-one"></div>
+            </div>
+        </div>
+        <div class="details">
+            <div class="tinfo">
+                @(Model.Spettacolos.Where(s => s.Id == item.SpettacoloId).FirstOrDefault().FkFilm)
+            </div>
+            <div class="tdata name">
+                @(Model.Spettacolos.Where(s => s.Id == item.SpettacoloId).FirstOrDefault().FkSala)
+            </div>
+            <div class="tinfo">
+                @(Model.Spettacolos.Where(s => s.Id == item.SpettacoloId).FirstOrDefault().Data)
+            </div>
+            <div class="tdata">
+                @(Model.Spettacolos.Where(s => s.Id == item.SpettacoloId).FirstOrDefault().Orario)
+            </div>
+            <div class="tdata">
+                Posto: @item.Posto Fila: @item.Fila
+            </div>
+            @if (Model.Spettacolos.Where(s => s.Id == item.SpettacoloId).FirstOrDefault().Data >= DateOnly.FromDateTime(DateTime.Now) && (Model.Spettacolos.Where(s => s.Id == item.SpettacoloId).FirstOrDefault().Orario.Hour - TimeOnly.FromDateTime(DateTime.Now).Hour) > 1)
+            {
+                <div class="link-danger">
+                    <a onclick=Delete('/Customer/Biglietto/Delete/@item.Id') class="btn btn-danger">CANCELLA PRENOTAZIONE</a>
+                </div>
+            }
+    </div>
+</div>
+}
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+    <script src="~/js/Biglietto.js"></script>
+    <script src="~/js/generaqrcode1.js"></script>
+}
