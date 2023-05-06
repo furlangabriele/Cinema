@@ -163,7 +163,7 @@ namespace Cinema.Areas.Identity.Pages.Account
                 user.Nome = Input.Nome;
                 user.Sesso = Input.Sesso;
                 user.DataNascita = Input.DataNascita;
-
+                user.Email = Input.Email;
 
 
 

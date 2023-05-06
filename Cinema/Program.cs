@@ -5,6 +5,7 @@ using Cinema.DataAccess.Repository.IRepository;
 using Cinema.DataAccess.Repository;
 using BulkyBook.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Cinema.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,13 +17,16 @@ var connectionString = builder.Configuration.GetConnectionString("default");
 var serverVersion = ServerVersion.AutoDetect(connectionString);
 builder.Services.AddDbContext<AppDbContext>(dbContextOptions => dbContextOptions.UseMySql(connectionString, serverVersion).LogTo(Console.WriteLine, LogLevel.Information).EnableSensitiveDataLogging().EnableDetailedErrors());
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
+builder.Services.Configure<EmailSenderOptions>(builder.Configuration.GetSection("EmailSender"));
+
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-
-builder.Services.AddSingleton<IEmailSender, EmailSender>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
