@@ -10,8 +10,9 @@ function loadDataTable() {
             "url": "/Admin/Analitica/GetAnaliticaFilm"
         },
         "columns": [
-            { data: "film", width: "50%" },
-            { data: "guadagni", width: "50%" },
+            { data: "film", width: "33%" },
+            { data: "guadagni", width: "33%" },
+            { data: "numBigliettiAcq", width: "50%" },
         ]
     });
 }

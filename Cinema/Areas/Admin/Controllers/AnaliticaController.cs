@@ -60,11 +60,13 @@ namespace Cinema.Areas.Admin.Controllers
             foreach (var film in listaFilms)
             {
                 int guadagnitotali = 0;
+                int numeroTickets = 0;
                 foreach (var item in listaTickets)
                 {
                     var spettacolo = _unitOfWork.Spettacolo.GetFirstOrDefault(s => s.Id == item.SpettacoloId);
                     if (spettacolo.FkFilm.Equals(film.Titolo))
                     {
+                        numeroTickets++;
                         var sala = _unitOfWork.Sala.GetFirstOrDefault(s => s.Numero == spettacolo.FkSala);
                         if (sala.Isense && item.Fila >= 5)
                         {
@@ -80,6 +82,7 @@ namespace Cinema.Areas.Admin.Controllers
                 {
                     Film = film.Titolo,
                     Guadagni = guadagnitotali,
+                    numBigliettiAcq= numeroTickets,
                 });
             }
             return Json(new { data = analiticaFilms });
@@ -94,11 +97,13 @@ namespace Cinema.Areas.Admin.Controllers
             foreach (var sala in listaSala)
             {
                 int guadagnitotali = 0;
+                int numeroTickets = 0;
                 foreach (var item in listaTickets)
                 {
                     var spettacolo = _unitOfWork.Spettacolo.GetFirstOrDefault(s => s.Id == item.SpettacoloId);
                     if (spettacolo.FkSala.Equals(sala.Numero))
                     {
+                        numeroTickets++;
                         if (sala.Isense && item.Fila >= 5)
                         {
                             guadagnitotali += 7;
@@ -113,6 +118,7 @@ namespace Cinema.Areas.Admin.Controllers
                 {
                     Sala = sala.Numero,
                     Guadagni = guadagnitotali,
+                    numBigliettiAcq= numeroTickets,
                 });
             }
             return Json(new { data = analiticaFilms });

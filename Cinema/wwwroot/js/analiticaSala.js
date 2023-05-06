@@ -10,8 +10,9 @@ function loadDataTable() {
             "url": "/Admin/Analitica/GetAnaliticaSala"
         },
         "columns": [
-            { data: "sala", width: "50%" },
-            { data: "guadagni", width: "50%" },
+            { data: "sala", width: "33%" },
+            { data: "guadagni", width: "33%" },
+            { data: "numBigliettiAcq", width: "33%" },
         ]
     });
 }

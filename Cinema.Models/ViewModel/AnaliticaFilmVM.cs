@@ -10,5 +10,6 @@ namespace Cinema.Models.ViewModel
     {
         public string Film { get; set; }
         public int Guadagni { get; set; }
+        public int numBigliettiAcq { get; set; }
     }
 }
