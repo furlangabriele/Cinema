@@ -8,7 +8,7 @@ namespace Cinema.Models.ViewModel
 {
     public class AnaliticaSalaVM
     {
-        public Sala Sala { get; set; }
+        public int Sala { get; set; }
         public int Guadagni { get; set; }
     }
 }

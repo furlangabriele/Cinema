@@ -5,10 +5,10 @@
     <h6 class="text-info">I guadagni totali del cinema nell'ultima settimana @Model $</h6>
     <div class="container row p-4">
         <div class="col-6">
-            <a href="#" class="btn btn-primary">Visualizza analitica per film</a>
+            <a asp-area="Admin" asp-controller="Analitica" asp-action="AnaliticaFilm" class="btn btn-primary">Visualizza analitica per film</a>
         </div>
         <div class="col-6">
-            <a href="#" class="btn btn-danger">Visualizza analitica per sala</a>
+            <a asp-area="Admin" asp-controller="Analitica" asp-action="AnaliticaSala" class="btn btn-danger">Visualizza analitica per sala</a>
         </div>
     </div>
 </div>
