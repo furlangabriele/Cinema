@@ -1,12 +1,9 @@
 ﻿@model IEnumerable<SelectListItem>
 
-<link rel="stylesheet" href="~/css/tickets6.css" />
+<link rel="stylesheet" href="~/css/tickets7.css" />
 
-<form class="movie-container" asp-action="CreaBiglietto" asp-area="Customer">
-    <h2>Scegli i tuoi posti</h2>
-    <select asp-items="Model" class="btn" name="posto_fila"></select>
-    <input class="btn btn-danger" type="submit" value="Aggiungi al tuo ordine">
-</form>
+<h2>Scegli i tuoi posti</h2>
+<button class="btn btn-danger" onclick="CreaBiglietti(@(TempData["spettacolo"]))">Aggiungi al tuo ordine</button>
 
 <div class="container p-4">
     <h4 class="text-danger">@(TempData["message"] != null ? TempData["message"] : "")</h4>
@@ -18,9 +15,9 @@
 
         <div class="cinema-seats left">
             <div class="cinema-row row-1">
-                @for(int i = 1; i < 8; i++)
+                @for (int i = 1; i < 8; i++)
                 {
-                    if(Model.Where(p => p.Value == $"{i}_1").Count() == 0)
+                    if (Model.Where(p => p.Value == $"{i}_1").Count() == 0)
                     {
                         <div class="seat active" id="@i-1"></div>
                         continue;
@@ -32,60 +29,60 @@
             <div class="cinema-row row-2">
                 @for (int i = 1; i < 8; i++)
                 {
-                    if(Model.Where(p => p.Value == $"{i}_2").Count() == 0)
+                    if (Model.Where(p => p.Value == $"{i}_2").Count() == 0)
                     {
                         <div class="seat active" id="@i-2"></div>
                         continue;
                     }
-                    <div class="seat" id="@i-2"></div>
+                    <div class="seat" id="@i-2" onclick="AggiungiItem(this.id)"></div>
                 }
             </div>
 
             <div class="cinema-row row-3">
                 @for (int i = 1; i < 8; i++)
                 {
-                    if(Model.Where(p => p.Value == $"{i}_3").Count() == 0)
+                    if (Model.Where(p => p.Value == $"{i}_3").Count() == 0)
                     {
                         <div class="seat active" id="@i-3"></div>
                         continue;
                     }
-                    <div class="seat" id="@i-3"></div>
+                    <div class="seat" id="@i-3" onclick="AggiungiItem(this.id)"></div>
                 }
             </div>
 
             <div class="cinema-row row-4">
                 @for (int i = 1; i < 8; i++)
                 {
-                    if(Model.Where(p => p.Value == $"{i}_4").Count() == 0)
+                    if (Model.Where(p => p.Value == $"{i}_4").Count() == 0)
                     {
                         <div class="seat active" id="@i-4"></div>
                         continue;
                     }
-                    <div class="seat" id="@i-4"></div>
+                    <div class="seat" id="@i-4" onclick="AggiungiItem(this.id)"></div>
                 }
             </div>
 
             <div class="cinema-row row-5">
                 @for (int i = 1; i < 8; i++)
                 {
-                    if(Model.Where(p => p.Value == $"{i}_5").Count() == 0)
+                    if (Model.Where(p => p.Value == $"{i}_5").Count() == 0)
                     {
                         <div class="seat active" id="@i-5"></div>
                         continue;
                     }
-                    <div class="seat" id="@i-5"></div>
+                    <div class="seat" id="@i-5" onclick="AggiungiItem(this.id)"></div>
                 }
             </div>
 
             <div class="cinema-row row-6">
-                 @for (int i = 1; i < 8; i++)
+                @for (int i = 1; i < 8; i++)
                 {
                     if (Model.Where(p => p.Value == $"{i}_6").Count() == 0)
                     {
                         <div class="seat active" id="@i-6"></div>
                         continue;
                     }
-                    <div class="seat" id="@i-6"></div>
+                    <div class="seat" id="@i-6" onclick="AggiungiItem(this.id)"></div>
                 }
             </div>
 
@@ -97,7 +94,7 @@
                         <div class="seat active" id="@i-7"></div>
                         continue;
                     }
-                    <div class="seat" id="@i-7"></div>
+                    <div class="seat" id="@i-7" onclick="AggiungiItem(this.id)"></div>
                 }
             </div>
         </div>
@@ -105,86 +102,86 @@
 
         <div class="cinema-seats right">
             <div class="cinema-row row-1">
-                @for (int i = 8; i < 15; i++)
+                @for (int i = 1; i < 8; i++)
                 {
-                    if (Model.Where(p => p.Value == $"{i}_1").Count() == 0)
+                    if (Model.Where(p => p.Value == $"{i}_8").Count() == 0)
                     {
-                        <div class="seat active" id="@i-1"></div>
+                        <div class="seat active" id="@i-8"></div>
                         continue;
                     }
-                    <div class="seat" id="@i-1"></div>
+                    <div class="seat" id="@i-8" onclick="AggiungiItem(this.id)"></div>
                 }
             </div>
 
             <div class="cinema-row row-2">
-                @for (int i = 8; i < 15; i++)
+                @for (int i = 1; i < 8; i++)
                 {
-                    if (Model.Where(p => p.Value == $"{i}_2").Count() == 0)
+                    if (Model.Where(p => p.Value == $"{i}_9").Count() == 0)
                     {
-                        <div class="seat active" id="@i-2"></div>
+                        <div class="seat active" id="@i-9"></div>
                         continue;
                     }
-                    <div class="seat" id="@i-2"></div>
+                    <div class="seat" id="@i-9" onclick="AggiungiItem(this.id)"></div>
                 }
             </div>
 
             <div class="cinema-row row-3">
-                @for (int i = 8; i < 15; i++)
+                @for (int i = 1; i < 8; i++)
                 {
-                    if (Model.Where(p => p.Value == $"{i}_3").Count() == 0)
+                    if (Model.Where(p => p.Value == $"{i}_10").Count() == 0)
                     {
-                        <div class="seat active" id="@i-3"></div>
+                        <div class="seat active" id="@i-10"></div>
                         continue;
                     }
-                    <div class="seat" id="@i-3"></div>
+                    <div class="seat" id="@i-10" onclick="AggiungiItem(this.id)"></div>
                 }
             </div>
 
             <div class="cinema-row row-4">
-                @for (int i = 8; i < 15; i++)
+                @for (int i = 1; i < 8; i++)
                 {
-                    if (Model.Where(p => p.Value == $"{i}_4").Count() == 0)
+                    if (Model.Where(p => p.Value == $"{i}_11").Count() == 0)
                     {
-                        <div class="seat active" id="@i-4"></div>
+                        <div class="seat active" id="@i-11"></div>
                         continue;
                     }
-                    <div class="seat" id="@i-4"></div>
+                    <div class="seat" id="@i-11" onclick="AggiungiItem(this.id)"></div>
                 }
             </div>
 
             <div class="cinema-row row-5">
-                @for (int i = 8; i < 15; i++)
+                @for (int i = 1; i < 8; i++)
                 {
-                    if (Model.Where(p => p.Value == $"{i}_5").Count() == 0)
+                    if (Model.Where(p => p.Value == $"{i}_12").Count() == 0)
                     {
-                        <div class="seat active" id="@i-5"></div>
+                        <div class="seat active" id="@i-12"></div>
                         continue;
                     }
-                    <div class="seat" id="@i-5"></div>
+                    <div class="seat" id="@i-12" onclick="AggiungiItem(this.id)"></div>
                 }
             </div>
 
             <div class="cinema-row row-6">
-                @for (int i = 8; i < 15; i++)
+                @for (int i = 1; i < 8; i++)
                 {
-                    if (Model.Where(p => p.Value == $"{i}_6").Count() == 0)
+                    if (Model.Where(p => p.Value == $"{i}_13").Count() == 0)
                     {
-                        <div class="seat active" id="@i-6"></div>
+                        <div class="seat active" id="@i-13"></div>
                         continue;
                     }
-                    <div class="seat" id="@i-6"></div>
+                    <div class="seat" id="@i-13" onclick="AggiungiItem(this.id)"></div>
                 }
             </div>
 
             <div class="cinema-row row-7">
-                @for (int i = 8; i < 15; i++)
+                @for (int i = 1; i < 8; i++)
                 {
-                    if (Model.Where(p => p.Value == $"{i}_7").Count() == 0)
+                    if (Model.Where(p => p.Value == $"{i}_14").Count() == 0)
                     {
-                        <div class="seat active" id="@i-7"></div>
+                        <div class="seat active" id="@i-14"></div>
                         continue;
                     }
-                    <div class="seat" id="@i-7"></div>
+                    <div class="seat" id="@i-14" onclick="AggiungiItem(this.id)"></div>
                 }
             </div>
         </div>
@@ -192,4 +189,6 @@
     </div>
 </div>
 
-<script src="~/js/prenotazioneBiglietti2.js"></script>
+@section Scripts{
+    <script src="~/js/prenotazioneBiglietti4.js"></script>
+}

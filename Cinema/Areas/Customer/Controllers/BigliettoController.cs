@@ -33,7 +33,7 @@ namespace Cinema.Areas.Customer.Controllers
                 {
                     if (bigliettiSpettacolo.Where(b => b.Fila == i && b.Posto == j).Count() == 0)
                     {
-                        postiDisponibili.Add($"{j}_{i}");
+                        postiDisponibili.Add($"{i}_{j}");
                     }
                 }
             }
@@ -45,12 +45,11 @@ namespace Cinema.Areas.Customer.Controllers
             TempData["spettacolo"] = id;
             return View(posti);
         }
-        [Authorize(Roles = SD.Role_Customer)]
-        public IActionResult CreaBiglietto(string posto_fila)
+        [HttpPost]
+        public IActionResult CreaBiglietto(string posto_fila, int id_spettacolo)
         {
             try
             {
-                var arr = posto_fila.Split('_');
                 var userIdentity = User.Identity;
                 var claimsIdentity = (ClaimsIdentity)userIdentity;
                 var claim = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
@@ -59,24 +58,22 @@ namespace Cinema.Areas.Customer.Controllers
                 {
                     return Redirect("/");
                 }
-                applicationUserId = claim.Value;
-                var biglietto = new Biglietto
+                applicationUserId = claim.Value;   
+                var arr1 = posto_fila.Split(';');
+                foreach (var item in arr1)
                 {
-                    SpettacoloId = (int)TempData["spettacolo"],
-                    ApplicationUserId = applicationUserId,
-                    Posto = int.Parse(arr[0]),
-                    Fila = int.Parse(arr[1])
-                };
-                if (_unitOfWork.Biglietto.GetAll().Where(b => b.ApplicationUserId == applicationUserId && b.SpettacoloId == biglietto.SpettacoloId).Count() >= 4)
-                {
-                    TempData["message"] = "Hai già 4 biglietti del seguente spettacolo non ne puoi acquistare altri";
-                }
-                else
-                {
+                    var arr = item.Split('-');
+                    var biglietto = new Biglietto
+                    {
+                        SpettacoloId = id_spettacolo,
+                        ApplicationUserId = applicationUserId,
+                        Posto = int.Parse(arr[1]),
+                        Fila = int.Parse(arr[0])
+                    };
                     _unitOfWork.Biglietto.Add(biglietto);
                     _unitOfWork.Save();
                 }
-                return Redirect($"/Customer/Biglietto/Index/{TempData["spettacolo"]}");
+                return Redirect($"/Customer/Carrello/");
             }
             catch (Exception)
             {
