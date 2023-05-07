@@ -3,6 +3,7 @@ using Cinema.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Security.Claims;
 
 namespace Cinema.Areas.Customer.Controllers
 {
@@ -28,6 +29,26 @@ namespace Cinema.Areas.Customer.Controllers
             obj.Pagato = true;
             _unitOfWork.Biglietto.Update(obj);
             _unitOfWork.Save();
+            return Redirect("/Customer/Valutazioni");
+        }
+        public IActionResult PagaTutto()
+        {
+            var userIdentity = User.Identity;
+            var claimsIdentity = (ClaimsIdentity)userIdentity;
+            var claim = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
+            string applicationUserId = null;
+            if (claim == null)
+            {
+                return Redirect("/");
+            }
+            applicationUserId = claim.Value;
+            var obj = _unitOfWork.Biglietto.GetAll().Where(b => b.ApplicationUserId == applicationUserId && !b.Pagato);
+            foreach (var item in obj)
+            {
+                item.Pagato = true;
+                _unitOfWork.Biglietto.Update(item);
+                _unitOfWork.Save();
+            }
             return Redirect("/Customer/Valutazioni");
         }
     }

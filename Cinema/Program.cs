@@ -6,6 +6,7 @@ using Cinema.DataAccess.Repository;
 using BulkyBook.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Cinema.Utility;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,4 +73,7 @@ app.MapControllerRoute(
 
 
 app.UseRequestLocalization("it-IT");
+
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
+
 app.Run();

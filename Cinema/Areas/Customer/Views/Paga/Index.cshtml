@@ -1,6 +1,9 @@
 ﻿@model int
+@using Microsoft.Extensions.Options
+@inject IOptions<Cinema.Utility.StripeSettings> Stripe
+
 
 <div class="container">
-    <a href="/Customer/Paga/Pagato/@Model" class="btn btn-info">Acquista</a>
+    <a href=@(Model == -1 ? "/Customer/Paga/PagaTutto" : $"/Customer/Paga/Pagato/{Model}") class="btn btn-info">Acquista</a>
     <a href="/Customer/Carrello" class="btn btn-dark">Torna al carrello</a>
 </div>
