@@ -164,7 +164,7 @@ namespace Cinema.Areas.Identity.Pages.Account
                 user.Sesso = Input.Sesso;
                 user.DataNascita = Input.DataNascita;
                 user.Email = Input.Email;
-
+                user.ComuneRes = Input.ComuneRes;
 
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
